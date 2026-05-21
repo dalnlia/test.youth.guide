@@ -6,151 +6,427 @@
   <title>내 자취 성향 테스트 🏠 | 고방</title>
   <meta property="og:title" content="내 자취 성향 테스트 🏠" />
   <meta property="og:description" content="7개 질문으로 알아보는 나한테 딱 맞는 자취 스타일!" />
-  <meta property="og:url" content="https://gobang.kr" />
+  <meta property="og:url" content="https://dalnlia.github.io/test.youth.guide/" />
   <meta property="og:type" content="website" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: 'Apple SD Gothic Neo', 'Pretendard', 'Noto Sans KR', sans-serif;
-      background: #FFF9F0;
+      font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      background: #F5F0E8;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px 16px;
+      position: relative;
+      overflow-x: hidden;
     }
-    #app { width: 100%; max-width: 540px; position: relative; }
+
+    /* 배경 데코 */
     body::before {
       content: '';
       position: fixed;
-      top: -80px; right: -80px;
-      width: 280px; height: 280px;
-      background: #FFE5C2;
-      border-radius: 50%;
+      top: -100px; right: -100px;
+      width: 340px; height: 340px;
+      background: radial-gradient(circle, #C8ECEA 0%, transparent 70%);
       z-index: 0;
+      pointer-events: none;
     }
     body::after {
       content: '';
       position: fixed;
-      bottom: -60px; left: -60px;
-      width: 200px; height: 200px;
-      background: #FFE5C2;
-      border-radius: 50%;
+      bottom: -80px; left: -80px;
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, #F5E6C8 0%, transparent 70%);
       z-index: 0;
+      pointer-events: none;
     }
+
+    #app { width: 100%; max-width: 520px; position: relative; z-index: 1; }
+
     .card {
-      background: #fff;
-      border-radius: 24px;
+      background: #FFFDF8;
+      border-radius: 28px;
       padding: 40px 36px;
       width: 100%;
+      border: 2px solid #E8DCC8;
+      box-shadow: 0 8px 40px rgba(61,191,191,0.10), 0 2px 8px rgba(0,0,0,0.04);
       position: relative;
-      z-index: 1;
-      border: 1.5px solid #FFE0B2;
-      box-shadow: 0 4px 32px rgba(255,140,0,0.08);
+      overflow: hidden;
     }
-    .progress-bar { width: 100%; height: 6px; background: #FFE5C2; border-radius: 99px; margin-bottom: 32px; overflow: hidden; }
-    .progress-fill { height: 100%; background: #FF8C00; border-radius: 99px; transition: width 0.4s cubic-bezier(.4,0,.2,1); }
-    .q-label { font-size: 12px; font-weight: 700; color: #FF8C00; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
-    .q-text { font-size: 21px; font-weight: 800; color: #1A1A1A; line-height: 1.45; margin-bottom: 28px; }
-    .options { display: flex; flex-direction: column; gap: 12px; }
+
+    /* 카드 상단 틸 포인트 */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #3DBFBF, #5DD6D6, #3DBFBF);
+      border-radius: 28px 28px 0 0;
+    }
+
+    /* 진행바 */
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: #EDE8DC;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3DBFBF, #5DD6D6);
+      border-radius: 99px;
+      transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    }
+    .progress-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: #3DBFBF;
+      min-width: 36px;
+      text-align: right;
+    }
+
+    /* 질문 */
+    .q-badge {
+      display: inline-block;
+      background: #E8F7F7;
+      color: #2A9D9D;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 14px;
+      letter-spacing: 0.05em;
+    }
+    .q-text {
+      font-size: 20px;
+      font-weight: 900;
+      color: #2D2D2D;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      word-break: keep-all;
+    }
+
+    /* 선택지 */
+    .options { display: flex; flex-direction: column; gap: 10px; }
     .option-btn {
-      background: #FFF9F0; border: 1.5px solid #FFE0B2; border-radius: 14px;
-      padding: 15px 18px; text-align: left; cursor: pointer; font-size: 15px;
-      color: #333; line-height: 1.4; transition: all 0.18s ease;
-      display: flex; align-items: center; gap: 12px; font-family: inherit;
+      background: #FFFDF8;
+      border: 2px solid #E8DCC8;
+      border-radius: 16px;
+      padding: 14px 18px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+      color: #444;
+      line-height: 1.5;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: inherit;
+      font-weight: 500;
+      word-break: keep-all;
     }
-    .option-btn:hover { background: #FFF0D9; border-color: #FF8C00; color: #1A1A1A; transform: translateY(-1px); }
-    .option-btn.selected { background: #FF8C00; border-color: #FF8C00; color: #fff; }
-    .emoji-badge { font-size: 22px; flex-shrink: 0; width: 32px; text-align: center; }
-    .start-screen { text-align: center; }
-    .start-emoji { font-size: 64px; margin-bottom: 20px; display: block; }
-    .start-title { font-size: 28px; font-weight: 800; color: #1A1A1A; margin-bottom: 10px; line-height: 1.3; }
-    .start-sub { font-size: 15px; color: #999; margin-bottom: 36px; line-height: 1.7; }
+    .option-btn:hover {
+      background: #E8F7F7;
+      border-color: #3DBFBF;
+      color: #2D2D2D;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(61,191,191,0.15);
+    }
+    .option-btn.selected {
+      background: #3DBFBF;
+      border-color: #3DBFBF;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(61,191,191,0.3);
+    }
+    .emoji-badge {
+      font-size: 20px;
+      flex-shrink: 0;
+      width: 30px;
+      text-align: center;
+    }
+
+    /* 시작 화면 */
+    .start-screen { text-align: center; padding: 8px 0; }
+    .start-logo {
+      font-size: 13px;
+      font-weight: 700;
+      color: #3DBFBF;
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+      display: block;
+    }
+    .start-img {
+      width: 160px;
+      height: 160px;
+      object-fit: contain;
+      margin: 0 auto 20px;
+      display: block;
+      filter: drop-shadow(0 4px 16px rgba(61,191,191,0.2));
+    }
+    .start-title {
+      font-size: 26px;
+      font-weight: 900;
+      color: #2D2D2D;
+      margin-bottom: 8px;
+      line-height: 1.3;
+      word-break: keep-all;
+    }
+    .start-title span { color: #3DBFBF; }
+    .start-sub {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
     .start-btn {
-      background: #FF8C00; color: #fff; border: none; border-radius: 14px;
-      padding: 18px 48px; font-size: 17px; font-weight: 700; cursor: pointer;
-      transition: all 0.18s ease; font-family: inherit;
+      background: #3DBFBF;
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      padding: 17px 48px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      box-shadow: 0 4px 20px rgba(61,191,191,0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
-    .start-btn:hover { background: #E67E00; transform: translateY(-2px); }
+    .start-btn:hover {
+      background: #2DAEAE;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(61,191,191,0.4);
+    }
+
+    /* 결과 화면 */
     .result-screen { text-align: center; }
-    .result-emoji { font-size: 72px; margin-bottom: 16px; display: block; }
-    .result-type { font-size: 12px; font-weight: 700; color: #FF8C00; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-    .result-name { font-size: 30px; font-weight: 800; color: #1A1A1A; margin-bottom: 6px; }
-    .result-sub { font-size: 16px; color: #FF8C00; font-weight: 700; margin-bottom: 20px; }
-    .result-desc { font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 28px; padding: 18px 20px; background: #FFF9F0; border-radius: 14px; text-align: left; border: 1px solid #FFE0B2; }
+    .result-badge {
+      display: inline-block;
+      background: #E8F7F7;
+      color: #2A9D9D;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 99px;
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+    .result-img {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      margin: 0 auto 16px;
+      display: block;
+      filter: drop-shadow(0 6px 20px rgba(61,191,191,0.2));
+      animation: floatIn 0.6s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes floatIn {
+      from { opacity: 0; transform: scale(0.7) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .result-name {
+      font-size: 28px;
+      font-weight: 900;
+      color: #2D2D2D;
+      margin-bottom: 4px;
+    }
+    .result-sub {
+      font-size: 15px;
+      color: #3DBFBF;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .result-desc {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.85;
+      margin-bottom: 24px;
+      padding: 16px 20px;
+      background: #F5F0E8;
+      border-radius: 16px;
+      text-align: left;
+      border: 1.5px solid #E8DCC8;
+      word-break: keep-all;
+    }
+
+    /* 버튼들 */
     .result-buttons { display: flex; flex-direction: column; gap: 10px; }
     .result-cta {
-      background: #FF8C00; color: #fff; border: none; border-radius: 14px;
-      padding: 17px 28px; font-size: 16px; font-weight: 700; cursor: pointer;
-      width: 100%; transition: all 0.18s ease; font-family: inherit;
+      background: #3DBFBF;
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      padding: 17px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      box-shadow: 0 4px 20px rgba(61,191,191,0.3);
+      word-break: keep-all;
     }
-    .result-cta:hover { background: #E67E00; transform: translateY(-1px); }
+    .result-cta:hover {
+      background: #2DAEAE;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(61,191,191,0.4);
+    }
     .result-secondary-btns { display: flex; gap: 8px; }
     .result-share-btn, .result-save-btn {
-      flex: 1; background: transparent; border: 1.5px solid #FFE0B2;
-      border-radius: 14px; padding: 14px 12px; font-size: 14px; font-weight: 700;
-      cursor: pointer; transition: all 0.18s ease; font-family: inherit;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
+      flex: 1;
+      background: #FFFDF8;
+      border: 2px solid #E8DCC8;
+      border-radius: 14px;
+      padding: 13px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #666;
     }
-    .result-share-btn { color: #FF8C00; }
-    .result-share-btn:hover { background: #FFF0D9; border-color: #FF8C00; }
-    .result-save-btn { color: #555; }
-    .result-save-btn:hover { background: #f5f5f5; border-color: #ccc; color: #333; }
+    .result-share-btn:hover {
+      border-color: #3DBFBF;
+      color: #3DBFBF;
+      background: #E8F7F7;
+    }
+    .result-save-btn:hover {
+      border-color: #B8A890;
+      color: #444;
+      background: #F0EBE0;
+    }
     .result-retry {
-      background: transparent; color: #bbb; border: 1.5px solid #F0F0F0;
-      border-radius: 14px; padding: 12px 28px; font-size: 13px; cursor: pointer;
-      width: 100%; transition: all 0.18s ease; font-family: inherit;
+      background: transparent;
+      color: #bbb;
+      border: 2px solid #EDE8DC;
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 13px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s ease;
+      font-family: inherit;
     }
-    .result-retry:hover { border-color: #FFE0B2; color: #FF8C00; }
+    .result-retry:hover { border-color: #3DBFBF; color: #3DBFBF; }
+
+    /* 토스트 */
     .toast {
-      position: fixed; bottom: 32px; left: 50%;
+      position: fixed;
+      bottom: 32px; left: 50%;
       transform: translateX(-50%) translateY(20px);
-      background: #1A1A1A; color: #fff; padding: 12px 24px;
-      border-radius: 99px; font-size: 14px; font-weight: 600;
-      opacity: 0; transition: all 0.3s ease; z-index: 9999; white-space: nowrap;
+      background: #2D2D2D;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 9999;
+      white-space: nowrap;
+      font-family: inherit;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* 저장용 정사각형 카드 */
+    /* 저장용 카드 */
     #save-card {
       position: fixed; left: -9999px; top: 0;
       width: 600px; height: 600px;
-      background: #FFF9F0;
+      background: #F5F0E8;
       display: flex; align-items: center; justify-content: center;
       z-index: -1;
     }
     .save-card-inner {
       width: 520px; height: 520px;
-      background: #fff; border-radius: 32px;
-      border: 2px solid #FFE0B2;
+      background: #FFFDF8;
+      border-radius: 32px;
+      border: 2.5px solid #E8DCC8;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      padding: 40px; text-align: center;
+      padding: 36px; text-align: center;
       position: relative; overflow: hidden;
     }
     .save-card-inner::before {
-      content: ''; position: absolute; top: -40px; right: -40px;
-      width: 160px; height: 160px; background: #FFE5C2; border-radius: 50%;
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #3DBFBF, #5DD6D6, #3DBFBF);
+      border-radius: 32px 32px 0 0;
     }
     .save-card-inner::after {
-      content: ''; position: absolute; bottom: -30px; left: -30px;
-      width: 120px; height: 120px; background: #FFE5C2; border-radius: 50%;
+      content: '';
+      position: absolute; bottom: -40px; right: -40px;
+      width: 130px; height: 130px;
+      background: radial-gradient(circle, #C8ECEA 0%, transparent 70%);
     }
-    .save-tag { background: #FF8C00; color: #fff; font-size: 12px; font-weight: 700; padding: 6px 16px; border-radius: 99px; letter-spacing: 0.05em; margin-bottom: 20px; position: relative; z-index: 1; }
-    .save-emoji { font-size: 80px; margin-bottom: 16px; position: relative; z-index: 1; }
-    .save-name { font-size: 32px; font-weight: 800; color: #1A1A1A; margin-bottom: 6px; position: relative; z-index: 1; }
-    .save-sub { font-size: 16px; color: #FF8C00; font-weight: 700; margin-bottom: 20px; position: relative; z-index: 1; }
-    .save-desc { font-size: 13px; color: #666; line-height: 1.7; background: #FFF9F0; border-radius: 12px; padding: 14px 18px; width: 100%; position: relative; z-index: 1; border: 1px solid #FFE0B2; }
-    .save-footer { margin-top: 20px; font-size: 13px; color: #bbb; font-weight: 600; position: relative; z-index: 1; }
+    .save-tag {
+      background: #E8F7F7; color: #2A9D9D;
+      font-size: 11px; font-weight: 700;
+      padding: 5px 14px; border-radius: 99px;
+      letter-spacing: 0.05em; margin-bottom: 16px;
+      position: relative; z-index: 1;
+    }
+    .save-img {
+      width: 140px; height: 140px;
+      object-fit: contain; margin-bottom: 12px;
+      position: relative; z-index: 1;
+    }
+    .save-name {
+      font-size: 26px; font-weight: 900;
+      color: #2D2D2D; margin-bottom: 4px;
+      position: relative; z-index: 1;
+    }
+    .save-sub {
+      font-size: 14px; color: #3DBFBF; font-weight: 700;
+      margin-bottom: 16px; position: relative; z-index: 1;
+    }
+    .save-desc {
+      font-size: 12px; color: #666; line-height: 1.7;
+      background: #F5F0E8; border-radius: 12px;
+      padding: 12px 16px; width: 100%;
+      position: relative; z-index: 1;
+      border: 1.5px solid #E8DCC8;
+      text-align: left;
+    }
+    .save-footer {
+      margin-top: 14px; font-size: 12px;
+      color: #3DBFBF; font-weight: 700;
+      position: relative; z-index: 1;
+    }
 
-    .fade-in { animation: fadeIn 0.35s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    /* 애니메이션 */
+    .fade-in { animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     @media (max-width: 480px) {
-      .card { padding: 32px 24px; }
-      .q-text { font-size: 18px; }
-      .start-title { font-size: 24px; }
-      .result-name { font-size: 26px; }
+      .card { padding: 32px 22px; }
+      .q-text { font-size: 17px; }
+      .start-title { font-size: 22px; }
+      .result-name { font-size: 24px; }
+      .result-img { width: 160px; height: 160px; }
     }
   </style>
 </head>
@@ -162,7 +438,7 @@
 <div id="save-card">
   <div class="save-card-inner" id="save-card-inner">
     <div class="save-tag">내 자취 성향 테스트 🏠</div>
-    <div class="save-emoji" id="save-emoji"></div>
+    <img class="save-img" id="save-img" src="" alt="" />
     <div class="save-name" id="save-name"></div>
     <div class="save-sub" id="save-sub"></div>
     <div class="save-desc" id="save-desc"></div>
@@ -173,60 +449,140 @@
 <div class="toast" id="toast"></div>
 
 <script>
+const BASE = 'https://dalnlia.github.io/test.youth.guide/images/';
+
 const questions = [
-  { q: "퇴근하고 집에 오면 제일 먼저 하는 건?", options: [
-    { emoji: "🛋️", text: "소파에 던져지기 (집이 제일이야)", types: ["집순이·집돌이"] },
-    { emoji: "🏃", text: "샤워하고 바로 다음 할 일 처리", types: ["시간부자"] },
-    { emoji: "🧾", text: "이번달 지출 확인 (월세 또 나갔네...)", types: ["알뜰 전세러"] },
-    { emoji: "☕", text: "이웃이랑 공용 공간에서 수다 떨기", types: ["동네 친구 수집가"] }
-  ]},
-  { q: "자취방 고를 때 절대 양보 못 하는 건?", options: [
-    { emoji: "🏢", text: "풀옵션 신축, 집 자체의 퀄리티", types: ["집순이·집돌이"] },
-    { emoji: "🚇", text: "역에서 도보 5분 이내", types: ["시간부자"] },
-    { emoji: "💰", text: "보증금·월세 최저가", types: ["가성비 장인"] },
-    { emoji: "🌳", text: "동네 분위기, 주변 커뮤니티", types: ["동네 친구 수집가"] }
-  ]},
-  { q: "이사할 때 나의 모습은?", options: [
-    { emoji: "😭", text: "이삿짐 박스 보는 것 자체가 싫어", types: ["귀차니스트"] },
-    { emoji: "🗂️", text: "새 동네 교통·환경 미리 분석 완료", types: ["JJJJ"] },
-    { emoji: "💸", text: "이사비 견적 세 군데 비교", types: ["가성비 장인"] },
-    { emoji: "🆕", text: "새 동네 새 사람 기대됨!", types: ["동네 친구 수집가"] }
-  ]},
-  { q: "주말 자취 라이프는?", options: [
-    { emoji: "🏠", text: "집에서 뒹굴뒹굴, 밖은 NO", types: ["집순이·집돌이"] },
-    { emoji: "📍", text: "동네 카페·공원 탐방", types: ["동네 친구 수집가"] },
-    { emoji: "💻", text: "재테크·저축 공부", types: ["JJJJ"] },
-    { emoji: "🏃", text: "운동하고 효율적으로 보내기", types: ["시간부자"] }
-  ]},
-  { q: "자취방 계약할 때 제일 신경 쓰이는 건?", options: [
-    { emoji: "📅", text: "얼마나 오래 살 수 있어?", types: ["귀차니스트"] },
-    { emoji: "💵", text: "보증금·월세 최대한 적게", types: ["알뜰 전세러"] },
-    { emoji: "📍", text: "역까지 거리부터 확인", types: ["시간부자"] },
-    { emoji: "😑", text: "자격 조건이 간단했으면 좋겠어", types: ["내 맘대로파"] }
-  ]},
-  { q: "친구한테 자취 얘기할 때 나는?", options: [
-    { emoji: "🚇", text: "\"나 역에서 진짜 3분이야\"", types: ["시간부자"] },
-    { emoji: "💸", text: "\"보증금 진짜 싸게 구했어\"", types: ["가성비 장인"] },
-    { emoji: "🏡", text: "\"우리 집 진짜 좋아, 놀러 와\"", types: ["집순이·집돌이"] },
-    { emoji: "👥", text: "\"우리 건물 이웃들이 진짜 좋아\"", types: ["동네 친구 수집가"] }
-  ]},
-  { q: "자취 라이프, 솔직히 지금 제일 스트레스는?", options: [
-    { emoji: "💸", text: "매달 나가는 월세", types: ["알뜰 전세러"] },
-    { emoji: "🚌", text: "출퇴근 이동 시간", types: ["시간부자"] },
-    { emoji: "📦", text: "또 이사해야 할 것 같은 느낌", types: ["귀차니스트"] },
-    { emoji: "📋", text: "자격 조건 읽다가 매번 포기", types: ["내 맘대로파"] }
-  ]}
+  {
+    q: "주말에 아무 약속이 없다. 나의 기분은?",
+    options: [
+      { emoji: "😌", text: "드디어...! 집에서 뒹굴 수 있어", types: ["방구석 만렙러"] },
+      { emoji: "📚", text: "잘됐다, 자기계발 or 운동 루틴 채우기", types: ["갓생 프로효율러"] },
+      { emoji: "💰", text: "지출 없는 날! 이번 주 절약 성공", types: ["갓성비 영앤리치"] },
+      { emoji: "😟", text: "어... 오늘 뭐하지? 누구 연락해볼까", types: ["핵인싸 소셜러"] }
+    ]
+  },
+  {
+    q: "자취방 고를 때 절대 양보 못 하는 건?",
+    options: [
+      { emoji: "🏢", text: "풀옵션·에어컨·세탁기 다 있는 신축", types: ["방구석 만렙러"] },
+      { emoji: "🚇", text: "역에서 도보 3분 이내", types: ["갓생 프로효율러"] },
+      { emoji: "💵", text: "보증금·월세 무조건 최저가", types: ["갓성비 영앤리치"] },
+      { emoji: "📅", text: "얼마나 오래 살 수 있는지", types: ["정착형 프로지박령"] }
+    ]
+  },
+  {
+    q: "월세 이체 알림이 뜨는 순간 내 반응은?",
+    options: [
+      { emoji: "😤", text: "이 돈이면 치킨이 몇 마리야...", types: ["숨만쉬어도적자형"] },
+      { emoji: "😐", text: "뭐 어쩌겠어, 살아야지 (그냥 넘김)", types: ["방구석 만렙러"] },
+      { emoji: "📊", text: "이번 달 고정지출 퍼센트 계산 시작", types: ["갓성비 영앤리치"] },
+      { emoji: "😮‍💨", text: "아 진짜 월세 탈출하고 싶다...", types: ["숨만쉬어도적자형"] }
+    ]
+  },
+  {
+    q: "퇴근 or 하교 후, 솔직한 내 심정은?",
+    options: [
+      { emoji: "🛋️", text: "아 빨리 집에서 누워야 해", types: ["방구석 만렙러"] },
+      { emoji: "😤", text: "오늘도 이동에 시간 다 뺏겼어...", types: ["갓생 프로효율러"] },
+      { emoji: "🔔", text: "오늘 같이 뭐할 사람 없나 (연락 확인)", types: ["핵인싸 소셜러"] },
+      { emoji: "😰", text: "또 이사 가야 할 것 같은 예감...", types: ["정착형 프로지박령"] }
+    ]
+  },
+  {
+    q: "이사할 때 나의 모습은?",
+    options: [
+      { emoji: "🤮", text: "박스 테이프 소리만 들어도 현기증", types: ["정착형 프로지박령"] },
+      { emoji: "🗂️", text: "새 동네 카페·편의시설 미리 지도 찍어둠", types: ["프로 미래설계러"] },
+      { emoji: "💸", text: "이삿짐 업체 3곳 견적 비교 후 선택", types: ["갓성비 영앤리치"] },
+      { emoji: "🆕", text: "새 동네 새 이웃! 새 인연 기대돼", types: ["핵인싸 소셜러"] }
+    ]
+  },
+  {
+    q: "내가 진짜 무서워하는 자취 악몽은?",
+    options: [
+      { emoji: "🏚️", text: "집주인이 보증금을 안 돌려줘서 소송 중인 꿈", types: ["멘탈수호자"] },
+      { emoji: "📦", text: "또 이사 박스 싸고 있는 꿈", types: ["정착형 프로지박령"] },
+      { emoji: "💸", text: "통장에 월세 빼고 잔액 0원인 꿈", types: ["숨만쉬어도적자형"] },
+      { emoji: "🕐", text: "출근인데 지하철이 집에서 1시간 거리인 꿈", types: ["갓생 프로효율러"] }
+    ]
+  },
+  {
+    q: "친구가 \"나 자취방 구하는데 뭐 봐?\" 물어보면?",
+    options: [
+      { emoji: "🛁", text: "\"옵션이 중요하지, 풀옵션인지 먼저 봐\"", types: ["방구석 만렙러"] },
+      { emoji: "🗺️", text: "\"일단 5년 뒤 계획 생각하고 골라\"", types: ["프로 미래설계러"] },
+      { emoji: "🤝", text: "\"동네 분위기 봐, 이웃이 진짜 중요해\"", types: ["핵인싸 소셜러"] },
+      { emoji: "🔐", text: "\"보증금 안전한지 무조건 먼저 알아봐\"", types: ["멘탈수호자"] }
+    ]
+  },
+  {
+    q: "나의 자취 최종 목표는?",
+    options: [
+      { emoji: "🗺️", text: "주거 먼저 안정시키고 장기 자산 플랜 짜기", types: ["프로 미래설계러"] },
+      { emoji: "🛡️", text: "사기 걱정 없이 마음 편하게 오래 살기", types: ["멘탈수호자"] },
+      { emoji: "🤝", text: "좋은 이웃들이랑 따뜻하게 같이 살기", types: ["핵인싸 소셜러"] },
+      { emoji: "💸", text: "월세 스트레스 끊고 돈 걱정 없이 살기", types: ["숨만쉬어도적자형"] }
+    ]
+  }
 ];
 
 const results = {
-  "집순이·집돌이": { emoji: "🏠", name: "집순이·집돌이", sub: '"집이 제일 좋아!"', desc: "퇴근하면 직행, 주말엔 종일 집에서... 집이 곧 나의 우주인 유형이에요. 어디 있어도 결국 집 생각만 해요. 월세는 아끼면서도 인프라가 중요한 야무진 집순이·집돌이에게 딱 맞는 집이 있어요!", link: "https://gobang.kr/youth/notices/guide?tab=happy-house" },
-  "시간부자": { emoji: "⚡", name: "시간부자", sub: '"이동시간도 아깝다고요!"', desc: "지하철 한 정거장도 아까워서 환승 루트 미리 짜두는 유형이에요. 이동이 곧 스트레스. 초역세권 신축 오피스텔에서 살 수 있는 집이 딱이에요!", link: "https://gobang.kr/youth/notices/guide?tab=youth-safe-house" },
-  "가성비 장인": { emoji: "💸", name: "가성비 장인", sub: '"같은 돈이면 더 알뜰하게!"', desc: "자취방도 최저가 비교 후 결정. 보증금 10만원 차이도 그냥 못 지나치는 철저한 알뜰파예요. 보증금 최소, 월세 절반으로 살 수 있는 집이 있어요!", link: "https://gobang.kr/youth/notices/guide?tab=purchase-rental" },
-  "동네 친구 수집가": { emoji: "🫂", name: "동네 친구 수집가", sub: '"옆방 사람이랑 친해지고 싶어!"', desc: "카페에서 옆 사람한테 먼저 말 거는 스타일. 집도 사람 냄새 나는 곳이길 바라는 유형이에요. 커뮤니티 프로그램이 있는 집이 딱이에요!", link: "https://gobang.kr/youth/notices/guide?tab=social" },
-  "알뜰 전세러": { emoji: "🐿️", name: "알뜰 전세러", sub: '"월세는 이제 그만!"', desc: "매달 통장에서 사라지는 월세 보며 한숨 쉬는 유형이에요. 어떻게든 전세로 넘어가고 싶은 현실 절약파. 목돈 없이도 전세로 살 수 있는 집이 있어요!", link: "https://gobang.kr/youth/notices/guide?tab=jeonse-rental" },
-  "내 맘대로파": { emoji: "🙋", name: "내 맘대로파", sub: '"복잡한 조건은 패스!"', desc: "소득 기준, 자산 기준, 순위 계산... 읽다가 포기한 적 있는 유형이에요. 조건 복잡한 거 딱 질색. 소득·자산 기준이 아예 없는 집이 딱이에요!", link: "https://gobang.kr/youth/notices/guide?tab=deundeun" },
-  "귀차니스트": { emoji: "🐨", name: "귀차니스트", sub: '"이사? 그게 뭔데 먹는 거야?"', desc: "이삿짐 박스만 봐도 몸살 나는 유형이에요. 한번 자리 잡으면 절대 안 움직이는 정착형 자취러. 최장 20년 한 집에서 살 수 있는 집이 딱이에요!", link: "https://gobang.kr/youth/notices/guide?tab=long-term-jeonse" },
-  "JJJJ": { emoji: "🗂️", name: "JJJJ", sub: '"5년 후까지 이미 계획했어요"', desc: "자취 계획도 스프레드시트로 관리하는 유형이에요. 주거도 인생 플랜의 일부. 최장 30년, 안정적으로 살 수 있는 집이 딱이에요!", link: "https://gobang.kr/youth/notices/guide?tab=national-rental" }
+  "방구석 만렙러": {
+    img: BASE + '1_bangguseok.png',
+    name: "방구석 만렙러",
+    sub: '"이불 밖은 위험해, 집이 최고야!"',
+    desc: "주말에 약속 없으면 오히려 에너지가 풀충전되는 찐 집순이·집돌이 성향. 배달과 OTT만 있으면 한 달도 버틸 수 있어요. 집 안에서의 쾌적함과 인프라가 삶의 질 그 자체인 유형!",
+    link: "https://gobang.kr/youth/notices/guide?tab=happy-house"
+  },
+  "갓생 프로효율러": {
+    img: BASE + '2_hyoryul.png',
+    name: "갓생 프로효율러",
+    sub: '"길바닥에 버리는 시간? 내 사전엔 없다."',
+    desc: "이동 시간에 진 빠지는 걸 세상에서 제일 싫어하는 파워 효율주의자. 무조건 역이랑 집이 1분 컷이어야 직성이 풀리는 프로 분초사회형!",
+    link: "https://gobang.kr/youth/notices/guide?tab=youth-safe-house"
+  },
+  "갓성비 영앤리치": {
+    img: BASE + '3_gasungbi.png',
+    name: "갓성비 영앤리치",
+    sub: '"돈은 아끼고 간지는 챙긴다!"',
+    desc: "고정 지출 줄이기에 진심인 알뜰 살림꾼이지만, 구질구질하게 살기는 싫은 트렌디한 절약러. 목돈 부담은 낮추면서 감성 자취 라이프는 포기 못 하는 야무진 유형!",
+    link: "https://gobang.kr/youth/notices/guide?tab=purchase-rental"
+  },
+  "핵인싸 소셜러": {
+    img: BASE + '4_social.png',
+    name: "핵인싸 소셜러",
+    sub: '"혼자는 외로워, 우리 같이 놀자!"',
+    desc: "퇴근하고 텅 빈 집에 혼자 들어갈 때 적막함을 견디기 힘들어함. 집이 마음 맞는 이웃들과 소소하게 취향을 공유하는 왁자지껄한 아지트이길 바라는 유형!",
+    link: "https://gobang.kr/youth/notices/guide?tab=social"
+  },
+  "숨만쉬어도적자형": {
+    img: BASE + '5_jeokja.png',
+    name: "숨만쉬어도적자형",
+    sub: '"월세 내고 나면 배달시킬 돈도 없다고요..."',
+    desc: "매달 뭉텅이로 뜯겨 나가는 월세 때문에 숨만 쉬어도 적자가 나는 현실파 자취생. 결국 월세 스트레스 없는 전세 세계관으로 눈을 돌리게 된 유형!",
+    link: "https://gobang.kr/youth/notices/guide?tab=jeonse-rental"
+  },
+  "멘탈수호자": {
+    img: BASE + '6_mental.png',
+    name: "멘탈수호자",
+    sub: '"내 보증금과 멘탈, 절대 지켜!"',
+    desc: "걱정도 사서 하고 의심도 많지만, 그만큼 내 자산과 독립 라이프를 야무지게 아끼는 평화주의자. 처음부터 완벽하게 검증된 안전한 곳에서 마음 편히 발 뻗고 자고 싶어 하는 유형!",
+    link: "https://gobang.kr/youth/notices/guide?tab=deundeun"
+  },
+  "정착형 프로지박령": {
+    img: BASE + '7_jibak.png',
+    name: "정착형 프로지박령",
+    sub: '"이사 박스만 봐도 어지러워..."',
+    desc: "이사 박스 테이프 뜯는 소리만 들어도 PTSD가 와서, 그냥 한 동네 한 집에서 내 집처럼 10년이고 20년이고 말뚝 박고 살고 싶어 하는 유형!",
+    link: "https://gobang.kr/youth/notices/guide?tab=long-term-jeonse"
+  },
+  "프로 미래설계러": {
+    img: BASE + '8_mirae.png',
+    name: "프로 미래설계러",
+    sub: '"내 인생 플랜 A는 이미 정해져 있다!"',
+    desc: "주거가 불안정하면 멘탈부터 흔들리는 파워 J형 자취러. 당장의 힙한 인테리어보다 장기 플랜을 세우는 걸 좋아하며, 가성비 좋게 오래 머물 기반을 다지는 유형!",
+    link: "https://gobang.kr/youth/notices/guide?tab=national-rental"
+  }
 };
 
 let currentQ = -1;
@@ -261,37 +617,41 @@ function copyLink() {
 function saveImage() {
   if (!currentResult) return;
   const r = currentResult;
-  document.getElementById('save-emoji').textContent = r.emoji;
+  document.getElementById('save-img').src = r.img;
   document.getElementById('save-name').textContent = r.name;
   document.getElementById('save-sub').textContent = r.sub;
   document.getElementById('save-desc').textContent = r.desc;
 
   const saveCard = document.getElementById('save-card');
-  const inner = document.getElementById('save-card-inner');
   saveCard.style.left = '0';
   saveCard.style.zIndex = '9999';
   showToast('⏳ 이미지 생성 중...');
 
-  html2canvas(inner, { scale: 2, useCORS: true, backgroundColor: null }).then(canvas => {
-    saveCard.style.left = '-9999px';
-    saveCard.style.zIndex = '-1';
-    const link = document.createElement('a');
-    link.download = '내_자취_성향_' + r.name + '.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-    showToast('🎉 이미지가 저장됐어요!');
-  }).catch(() => {
-    saveCard.style.left = '-9999px';
-    showToast('저장에 실패했어요. 다시 시도해주세요.');
-  });
+  setTimeout(() => {
+    html2canvas(document.getElementById('save-card-inner'), {
+      scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#FFFDF8'
+    }).then(canvas => {
+      saveCard.style.left = '-9999px';
+      saveCard.style.zIndex = '-1';
+      const link = document.createElement('a');
+      link.download = '내_자취_성향_' + r.name + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('🎉 이미지가 저장됐어요!');
+    }).catch(() => {
+      saveCard.style.left = '-9999px';
+      showToast('저장에 실패했어요. 다시 시도해주세요.');
+    });
+  }, 500);
 }
 
 function showStart() {
   render(`
     <div class="start-screen">
-      <span class="start-emoji">🏠</span>
-      <div class="start-title">내 자취 성향 테스트</div>
-      <div class="start-sub">7개 질문으로 알아보는<br>나한테 딱 맞는 자취 스타일!</div>
+      <span class="start-logo">🏠 고방 자취 성향 테스트</span>
+      <img class="start-img" src="${BASE}1_bangguseok.png" alt="캐릭터" />
+      <div class="start-title">나의 <span>자취 성향</span>은?</div>
+      <div class="start-sub">8개 질문으로 알아보는<br>나한테 딱 맞는 자취 스타일!</div>
       <button class="start-btn" onclick="startQuiz()">테스트 시작하기 →</button>
     </div>
   `);
@@ -305,7 +665,7 @@ function startQuiz() {
 
 function showQuestion() {
   const q = questions[currentQ];
-  const progress = (currentQ / questions.length) * 100;
+  const progress = Math.round((currentQ / questions.length) * 100);
   const optionsHtml = q.options.map((o, i) => `
     <button class="option-btn" onclick="selectOption(${i})">
       <span class="emoji-badge">${o.emoji}</span>
@@ -313,8 +673,11 @@ function showQuestion() {
     </button>
   `).join('');
   render(`
-    <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
-    <div class="q-label">Q${currentQ + 1} / ${questions.length}</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+      <span class="progress-text">${currentQ + 1}/${questions.length}</span>
+    </div>
+    <div class="q-badge">Q${currentQ + 1}</div>
     <div class="q-text">${q.q}</div>
     <div class="options">${optionsHtml}</div>
   `);
@@ -322,17 +685,16 @@ function showQuestion() {
 
 function selectOption(idx) {
   const q = questions[currentQ];
-  const selected = q.options[idx];
   document.querySelectorAll('.option-btn').forEach((btn, i) => {
     if (i === idx) btn.classList.add('selected');
     btn.style.pointerEvents = 'none';
   });
-  selected.types.forEach(t => { if (scores[t] !== undefined) scores[t]++; });
+  q.options[idx].types.forEach(t => { if (scores[t] !== undefined) scores[t]++; });
   setTimeout(() => {
     currentQ++;
     if (currentQ < questions.length) showQuestion();
     else showResult();
-  }, 400);
+  }, 420);
 }
 
 function showResult() {
@@ -341,9 +703,12 @@ function showResult() {
   currentResult = r;
   render(`
     <div class="result-screen">
-      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-      <span class="result-emoji">${r.emoji}</span>
-      <div class="result-type">나의 자취 유형</div>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+        <span class="progress-text">완료!</span>
+      </div>
+      <div class="result-badge">나의 자취 유형</div>
+      <img class="result-img" src="${r.img}" alt="${r.name}" />
       <div class="result-name">${r.name}</div>
       <div class="result-sub">${r.sub}</div>
       <div class="result-desc">${r.desc}</div>
