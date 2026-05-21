@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>내 자취 성향 테스트 🏠 | 고방</title>
+  <meta property="og:title" content="내 자취 성향 테스트 🏠" />
+  <meta property="og:description" content="7개 질문으로 알아보는 나한테 딱 맞는 자취 스타일!" />
+  <meta property="og:url" content="https://gobang.kr" />
+  <meta property="og:type" content="website" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Pretendard', 'Noto Sans KR', sans-serif;
+      background: #FFF9F0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+    #app { width: 100%; max-width: 540px; position: relative; }
+    body::before {
+      content: '';
+      position: fixed;
+      top: -80px; right: -80px;
+      width: 280px; height: 280px;
+      background: #FFE5C2;
+      border-radius: 50%;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -60px; left: -60px;
+      width: 200px; height: 200px;
+      background: #FFE5C2;
+      border-radius: 50%;
+      z-index: 0;
+    }
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px 36px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      border: 1.5px solid #FFE0B2;
+      box-shadow: 0 4px 32px rgba(255,140,0,0.08);
+    }
+    .progress-bar { width: 100%; height: 6px; background: #FFE5C2; border-radius: 99px; margin-bottom: 32px; overflow: hidden; }
+    .progress-fill { height: 100%; background: #FF8C00; border-radius: 99px; transition: width 0.4s cubic-bezier(.4,0,.2,1); }
+    .q-label { font-size: 12px; font-weight: 700; color: #FF8C00; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+    .q-text { font-size: 21px; font-weight: 800; color: #1A1A1A; line-height: 1.45; margin-bottom: 28px; }
+    .options { display: flex; flex-direction: column; gap: 12px; }
+    .option-btn {
+      background: #FFF9F0; border: 1.5px solid #FFE0B2; border-radius: 14px;
+      padding: 15px 18px; text-align: left; cursor: pointer; font-size: 15px;
+      color: #333; line-height: 1.4; transition: all 0.18s ease;
+      display: flex; align-items: center; gap: 12px; font-family: inherit;
+    }
+    .option-btn:hover { background: #FFF0D9; border-color: #FF8C00; color: #1A1A1A; transform: translateY(-1px); }
+    .option-btn.selected { background: #FF8C00; border-color: #FF8C00; color: #fff; }
+    .emoji-badge { font-size: 22px; flex-shrink: 0; width: 32px; text-align: center; }
+    .start-screen { text-align: center; }
+    .start-emoji { font-size: 64px; margin-bottom: 20px; display: block; }
+    .start-title { font-size: 28px; font-weight: 800; color: #1A1A1A; margin-bottom: 10px; line-height: 1.3; }
+    .start-sub { font-size: 15px; color: #999; margin-bottom: 36px; line-height: 1.7; }
+    .start-btn {
+      background: #FF8C00; color: #fff; border: none; border-radius: 14px;
+      padding: 18px 48px; font-size: 17px; font-weight: 700; cursor: pointer;
+      transition: all 0.18s ease; font-family: inherit;
+    }
+    .start-btn:hover { background: #E67E00; transform: translateY(-2px); }
+    .result-screen { text-align: center; }
+    .result-emoji { font-size: 72px; margin-bottom: 16px; display: block; }
+    .result-type { font-size: 12px; font-weight: 700; color: #FF8C00; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .result-name { font-size: 30px; font-weight: 800; color: #1A1A1A; margin-bottom: 6px; }
+    .result-sub { font-size: 16px; color: #FF8C00; font-weight: 700; margin-bottom: 20px; }
+    .result-desc { font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 28px; padding: 18px 20px; background: #FFF9F0; border-radius: 14px; text-align: left; border: 1px solid #FFE0B2; }
+    .result-buttons { display: flex; flex-direction: column; gap: 10px; }
+    .result-cta {
+      background: #FF8C00; color: #fff; border: none; border-radius: 14px;
+      padding: 17px 28px; font-size: 16px; font-weight: 700; cursor: pointer;
+      width: 100%; transition: all 0.18s ease; font-family: inherit;
+    }
+    .result-cta:hover { background: #E67E00; transform: translateY(-1px); }
+    .result-secondary-btns { display: flex; gap: 8px; }
+    .result-share-btn, .result-save-btn {
+      flex: 1; background: transparent; border: 1.5px solid #FFE0B2;
+      border-radius: 14px; padding: 14px 12px; font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: all 0.18s ease; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .result-share-btn { color: #FF8C00; }
+    .result-share-btn:hover { background: #FFF0D9; border-color: #FF8C00; }
+    .result-save-btn { color: #555; }
+    .result-save-btn:hover { background: #f5f5f5; border-color: #ccc; color: #333; }
+    .result-retry {
+      background: transparent; color: #bbb; border: 1.5px solid #F0F0F0;
+      border-radius: 14px; padding: 12px 28px; font-size: 13px; cursor: pointer;
+      width: 100%; transition: all 0.18s ease; font-family: inherit;
+    }
+    .result-retry:hover { border-color: #FFE0B2; color: #FF8C00; }
+    .toast {
+      position: fixed; bottom: 32px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1A1A1A; color: #fff; padding: 12px 24px;
+      border-radius: 99px; font-size: 14px; font-weight: 600;
+      opacity: 0; transition: all 0.3s ease; z-index: 9999; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* 저장용 정사각형 카드 */
+    #save-card {
+      position: fixed; left: -9999px; top: 0;
+      width: 600px; height: 600px;
+      background: #FFF9F0;
+      display: flex; align-items: center; justify-content: center;
+      z-index: -1;
+    }
+    .save-card-inner {
+      width: 520px; height: 520px;
+      background: #fff; border-radius: 32px;
+      border: 2px solid #FFE0B2;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 40px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .save-card-inner::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 160px; height: 160px; background: #FFE5C2; border-radius: 50%;
+    }
+    .save-card-inner::after {
+      content: ''; position: absolute; bottom: -30px; left: -30px;
+      width: 120px; height: 120px; background: #FFE5C2; border-radius: 50%;
+    }
+    .save-tag { background: #FF8C00; color: #fff; font-size: 12px; font-weight: 700; padding: 6px 16px; border-radius: 99px; letter-spacing: 0.05em; margin-bottom: 20px; position: relative; z-index: 1; }
+    .save-emoji { font-size: 80px; margin-bottom: 16px; position: relative; z-index: 1; }
+    .save-name { font-size: 32px; font-weight: 800; color: #1A1A1A; margin-bottom: 6px; position: relative; z-index: 1; }
+    .save-sub { font-size: 16px; color: #FF8C00; font-weight: 700; margin-bottom: 20px; position: relative; z-index: 1; }
+    .save-desc { font-size: 13px; color: #666; line-height: 1.7; background: #FFF9F0; border-radius: 12px; padding: 14px 18px; width: 100%; position: relative; z-index: 1; border: 1px solid #FFE0B2; }
+    .save-footer { margin-top: 20px; font-size: 13px; color: #bbb; font-weight: 600; position: relative; z-index: 1; }
+
+    .fade-in { animation: fadeIn 0.35s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 480px) {
+      .card { padding: 32px 24px; }
+      .q-text { font-size: 18px; }
+      .start-title { font-size: 24px; }
+      .result-name { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="card fade-in" id="card-content"></div>
+</div>
+
+<div id="save-card">
+  <div class="save-card-inner" id="save-card-inner">
+    <div class="save-tag">내 자취 성향 테스트 🏠</div>
+    <div class="save-emoji" id="save-emoji"></div>
+    <div class="save-name" id="save-name"></div>
+    <div class="save-sub" id="save-sub"></div>
+    <div class="save-desc" id="save-desc"></div>
+    <div class="save-footer">고방 · gobang.kr</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { q: "퇴근하고 집에 오면 제일 먼저 하는 건?", options: [
+    { emoji: "🛋️", text: "소파에 던져지기 (집이 제일이야)", types: ["집순이·집돌이"] },
+    { emoji: "🏃", text: "샤워하고 바로 다음 할 일 처리", types: ["시간부자"] },
+    { emoji: "🧾", text: "이번달 지출 확인 (월세 또 나갔네...)", types: ["알뜰 전세러"] },
+    { emoji: "☕", text: "이웃이랑 공용 공간에서 수다 떨기", types: ["동네 친구 수집가"] }
+  ]},
+  { q: "자취방 고를 때 절대 양보 못 하는 건?", options: [
+    { emoji: "🏢", text: "풀옵션 신축, 집 자체의 퀄리티", types: ["집순이·집돌이"] },
+    { emoji: "🚇", text: "역에서 도보 5분 이내", types: ["시간부자"] },
+    { emoji: "💰", text: "보증금·월세 최저가", types: ["가성비 장인"] },
+    { emoji: "🌳", text: "동네 분위기, 주변 커뮤니티", types: ["동네 친구 수집가"] }
+  ]},
+  { q: "이사할 때 나의 모습은?", options: [
+    { emoji: "😭", text: "이삿짐 박스 보는 것 자체가 싫어", types: ["귀차니스트"] },
+    { emoji: "🗂️", text: "새 동네 교통·환경 미리 분석 완료", types: ["JJJJ"] },
+    { emoji: "💸", text: "이사비 견적 세 군데 비교", types: ["가성비 장인"] },
+    { emoji: "🆕", text: "새 동네 새 사람 기대됨!", types: ["동네 친구 수집가"] }
+  ]},
+  { q: "주말 자취 라이프는?", options: [
+    { emoji: "🏠", text: "집에서 뒹굴뒹굴, 밖은 NO", types: ["집순이·집돌이"] },
+    { emoji: "📍", text: "동네 카페·공원 탐방", types: ["동네 친구 수집가"] },
+    { emoji: "💻", text: "재테크·저축 공부", types: ["JJJJ"] },
+    { emoji: "🏃", text: "운동하고 효율적으로 보내기", types: ["시간부자"] }
+  ]},
+  { q: "자취방 계약할 때 제일 신경 쓰이는 건?", options: [
+    { emoji: "📅", text: "얼마나 오래 살 수 있어?", types: ["귀차니스트"] },
+    { emoji: "💵", text: "보증금·월세 최대한 적게", types: ["알뜰 전세러"] },
+    { emoji: "📍", text: "역까지 거리부터 확인", types: ["시간부자"] },
+    { emoji: "😑", text: "자격 조건이 간단했으면 좋겠어", types: ["내 맘대로파"] }
+  ]},
+  { q: "친구한테 자취 얘기할 때 나는?", options: [
+    { emoji: "🚇", text: "\"나 역에서 진짜 3분이야\"", types: ["시간부자"] },
+    { emoji: "💸", text: "\"보증금 진짜 싸게 구했어\"", types: ["가성비 장인"] },
+    { emoji: "🏡", text: "\"우리 집 진짜 좋아, 놀러 와\"", types: ["집순이·집돌이"] },
+    { emoji: "👥", text: "\"우리 건물 이웃들이 진짜 좋아\"", types: ["동네 친구 수집가"] }
+  ]},
+  { q: "자취 라이프, 솔직히 지금 제일 스트레스는?", options: [
+    { emoji: "💸", text: "매달 나가는 월세", types: ["알뜰 전세러"] },
+    { emoji: "🚌", text: "출퇴근 이동 시간", types: ["시간부자"] },
+    { emoji: "📦", text: "또 이사해야 할 것 같은 느낌", types: ["귀차니스트"] },
+    { emoji: "📋", text: "자격 조건 읽다가 매번 포기", types: ["내 맘대로파"] }
+  ]}
+];
+
+const results = {
+  "집순이·집돌이": { emoji: "🏠", name: "집순이·집돌이", sub: '"집이 제일 좋아!"', desc: "퇴근하면 직행, 주말엔 종일 집에서... 집이 곧 나의 우주인 유형이에요. 어디 있어도 결국 집 생각만 해요. 월세는 아끼면서도 인프라가 중요한 야무진 집순이·집돌이에게 딱 맞는 집이 있어요!", link: "https://gobang.kr/youth/notices/guide?tab=happy-house" },
+  "시간부자": { emoji: "⚡", name: "시간부자", sub: '"이동시간도 아깝다고요!"', desc: "지하철 한 정거장도 아까워서 환승 루트 미리 짜두는 유형이에요. 이동이 곧 스트레스. 초역세권 신축 오피스텔에서 살 수 있는 집이 딱이에요!", link: "https://gobang.kr/youth/notices/guide?tab=youth-safe-house" },
+  "가성비 장인": { emoji: "💸", name: "가성비 장인", sub: '"같은 돈이면 더 알뜰하게!"', desc: "자취방도 최저가 비교 후 결정. 보증금 10만원 차이도 그냥 못 지나치는 철저한 알뜰파예요. 보증금 최소, 월세 절반으로 살 수 있는 집이 있어요!", link: "https://gobang.kr/youth/notices/guide?tab=purchase-rental" },
+  "동네 친구 수집가": { emoji: "🫂", name: "동네 친구 수집가", sub: '"옆방 사람이랑 친해지고 싶어!"', desc: "카페에서 옆 사람한테 먼저 말 거는 스타일. 집도 사람 냄새 나는 곳이길 바라는 유형이에요. 커뮤니티 프로그램이 있는 집이 딱이에요!", link: "https://gobang.kr/youth/notices/guide?tab=social" },
+  "알뜰 전세러": { emoji: "🐿️", name: "알뜰 전세러", sub: '"월세는 이제 그만!"', desc: "매달 통장에서 사라지는 월세 보며 한숨 쉬는 유형이에요. 어떻게든 전세로 넘어가고 싶은 현실 절약파. 목돈 없이도 전세로 살 수 있는 집이 있어요!", link: "https://gobang.kr/youth/notices/guide?tab=jeonse-rental" },
+  "내 맘대로파": { emoji: "🙋", name: "내 맘대로파", sub: '"복잡한 조건은 패스!"', desc: "소득 기준, 자산 기준, 순위 계산... 읽다가 포기한 적 있는 유형이에요. 조건 복잡한 거 딱 질색. 소득·자산 기준이 아예 없는 집이 딱이에요!", link: "https://gobang.kr/youth/notices/guide?tab=deundeun" },
+  "귀차니스트": { emoji: "🐨", name: "귀차니스트", sub: '"이사? 그게 뭔데 먹는 거야?"', desc: "이삿짐 박스만 봐도 몸살 나는 유형이에요. 한번 자리 잡으면 절대 안 움직이는 정착형 자취러. 최장 20년 한 집에서 살 수 있는 집이 딱이에요!", link: "https://gobang.kr/youth/notices/guide?tab=long-term-jeonse" },
+  "JJJJ": { emoji: "🗂️", name: "JJJJ", sub: '"5년 후까지 이미 계획했어요"', desc: "자취 계획도 스프레드시트로 관리하는 유형이에요. 주거도 인생 플랜의 일부. 최장 30년, 안정적으로 살 수 있는 집이 딱이에요!", link: "https://gobang.kr/youth/notices/guide?tab=national-rental" }
+};
+
+let currentQ = -1;
+let scores = {};
+let currentResult = null;
+Object.keys(results).forEach(k => scores[k] = 0);
+
+function render(html) {
+  const card = document.getElementById('card-content');
+  card.innerHTML = html;
+  card.classList.remove('fade-in');
+  void card.offsetWidth;
+  card.classList.add('fade-in');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function copyLink() {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('🔗 링크가 복사됐어요!');
+  }).catch(() => {
+    prompt('아래 링크를 복사해서 공유해요!', url);
+  });
+}
+
+function saveImage() {
+  if (!currentResult) return;
+  const r = currentResult;
+  document.getElementById('save-emoji').textContent = r.emoji;
+  document.getElementById('save-name').textContent = r.name;
+  document.getElementById('save-sub').textContent = r.sub;
+  document.getElementById('save-desc').textContent = r.desc;
+
+  const saveCard = document.getElementById('save-card');
+  const inner = document.getElementById('save-card-inner');
+  saveCard.style.left = '0';
+  saveCard.style.zIndex = '9999';
+  showToast('⏳ 이미지 생성 중...');
+
+  html2canvas(inner, { scale: 2, useCORS: true, backgroundColor: null }).then(canvas => {
+    saveCard.style.left = '-9999px';
+    saveCard.style.zIndex = '-1';
+    const link = document.createElement('a');
+    link.download = '내_자취_성향_' + r.name + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('🎉 이미지가 저장됐어요!');
+  }).catch(() => {
+    saveCard.style.left = '-9999px';
+    showToast('저장에 실패했어요. 다시 시도해주세요.');
+  });
+}
+
+function showStart() {
+  render(`
+    <div class="start-screen">
+      <span class="start-emoji">🏠</span>
+      <div class="start-title">내 자취 성향 테스트</div>
+      <div class="start-sub">7개 질문으로 알아보는<br>나한테 딱 맞는 자취 스타일!</div>
+      <button class="start-btn" onclick="startQuiz()">테스트 시작하기 →</button>
+    </div>
+  `);
+}
+
+function startQuiz() {
+  currentQ = 0;
+  Object.keys(scores).forEach(k => scores[k] = 0);
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = questions[currentQ];
+  const progress = (currentQ / questions.length) * 100;
+  const optionsHtml = q.options.map((o, i) => `
+    <button class="option-btn" onclick="selectOption(${i})">
+      <span class="emoji-badge">${o.emoji}</span>
+      <span>${o.text}</span>
+    </button>
+  `).join('');
+  render(`
+    <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+    <div class="q-label">Q${currentQ + 1} / ${questions.length}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="options">${optionsHtml}</div>
+  `);
+}
+
+function selectOption(idx) {
+  const q = questions[currentQ];
+  const selected = q.options[idx];
+  document.querySelectorAll('.option-btn').forEach((btn, i) => {
+    if (i === idx) btn.classList.add('selected');
+    btn.style.pointerEvents = 'none';
+  });
+  selected.types.forEach(t => { if (scores[t] !== undefined) scores[t]++; });
+  setTimeout(() => {
+    currentQ++;
+    if (currentQ < questions.length) showQuestion();
+    else showResult();
+  }, 400);
+}
+
+function showResult() {
+  const top = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+  const r = results[top];
+  currentResult = r;
+  render(`
+    <div class="result-screen">
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      <span class="result-emoji">${r.emoji}</span>
+      <div class="result-type">나의 자취 유형</div>
+      <div class="result-name">${r.name}</div>
+      <div class="result-sub">${r.sub}</div>
+      <div class="result-desc">${r.desc}</div>
+      <div class="result-buttons">
+        <button class="result-cta" onclick="window.open('${r.link}', '_blank')">나한테 맞는 청년주택 유형 보기 →</button>
+        <div class="result-secondary-btns">
+          <button class="result-share-btn" onclick="copyLink()">🔗 테스트 공유하기</button>
+          <button class="result-save-btn" onclick="saveImage()">💾 이미지 저장</button>
+        </div>
+        <button class="result-retry" onclick="showStart()">다시 테스트하기</button>
+      </div>
+    </div>
+  `);
+}
+
+showStart();
+</script>
+</body>
+</html>
