@@ -178,19 +178,20 @@
       filter: drop-shadow(0 4px 16px rgba(61,191,191,0.2));
     }
     .start-title {
-      font-size: 26px;
+      font-size: 32px;
       font-weight: 900;
       color: #2D2D2D;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       line-height: 1.3;
       word-break: keep-all;
     }
     .start-title span { color: #3DBFBF; }
     .start-sub {
-      font-size: 14px;
-      color: #999;
+      font-size: 17px;
+      color: #888;
       margin-bottom: 32px;
       line-height: 1.7;
+      word-break: keep-all;
     }
     .start-btn {
       background: #3DBFBF;
@@ -424,7 +425,7 @@
     @media (max-width: 480px) {
       .card { padding: 32px 22px; }
       .q-text { font-size: 17px; }
-      .start-title { font-size: 22px; }
+      .start-title { font-size: 26px; }
       .result-name { font-size: 24px; }
       .result-img { width: 160px; height: 160px; }
     }
@@ -648,11 +649,10 @@ function saveImage() {
 function showStart() {
   render(`
     <div class="start-screen">
-      <span class="start-logo">🏠 고방 자취 성향 테스트</span>
-      <img class="start-img" src="${BASE}1_bangguseok.png" alt="캐릭터" />
+      <img class="start-img" src="${BASE}0_start.png" alt="캐릭터" />
       <div class="start-title">나의 <span>자취 성향</span>은?</div>
-      <div class="start-sub">8개 질문으로 알아보는<br>나한테 딱 맞는 자취 스타일!</div>
-      <button class="start-btn" onclick="startQuiz()">테스트 시작하기 →</button>
+      <div class="start-sub">8개 질문으로 알아보는<br>나에게 딱 맞는 자취 스타일!</div>
+      <button class="start-btn" onclick="startQuiz()">테스트 시작!</button>
     </div>
   `);
 }
@@ -713,10 +713,10 @@ function showResult() {
       <div class="result-sub">${r.sub}</div>
       <div class="result-desc">${r.desc}</div>
       <div class="result-buttons">
-        <button class="result-cta" onclick="window.open('${r.link}', '_blank')">나한테 맞는 청년주택 유형 보기 →</button>
+        <button class="result-cta" onclick="window.open('${r.link}', '_blank')">나한테 딱 맞는 청년주택 확인 →</button>
         <div class="result-secondary-btns">
           <button class="result-share-btn" onclick="copyLink()">🔗 테스트 공유하기</button>
-          <button class="result-save-btn" onclick="saveImage()">💾 이미지 저장</button>
+          <button class="result-save-btn" onclick="saveImage()">💾 이미지 저장하기</button>
         </div>
         <button class="result-retry" onclick="showStart()">다시 테스트하기</button>
       </div>
