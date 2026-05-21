@@ -610,6 +610,26 @@ let scores = {};
 let currentResult = null;
 Object.keys(results).forEach(k => scores[k] = 0);
 
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwJebOavBCbLZXdGy_J5V0Nm8rEi6Ga3yF1Z9cADWezP4mmAqWlHJ4oq1isv_E4svNkhA/exec';
+
+// 유저 ID 생성 (세션 단위)
+const userId = (() => {
+  let id = sessionStorage.getItem('gobang_uid');
+  if (!id) {
+    id = 'u_' + Math.random().toString(36).slice(2, 10);
+    sessionStorage.setItem('gobang_uid', id);
+  }
+  return id;
+})();
+
+function logCTA(button) {
+  const type = currentResult ? currentResult.name : '-';
+  fetch(SHEET_URL, {
+    method: 'POST',
+    body: JSON.stringify({ button, type, userId }),
+  }).catch(() => {});
+}
+
 function render(html) {
   const card = document.getElementById('card-content');
   card.innerHTML = html;
@@ -626,6 +646,7 @@ function showToast(msg) {
 }
 
 function copyLink() {
+  logCTA('테스트 공유하기');
   const url = window.location.href;
   navigator.clipboard.writeText(url).then(() => {
     showToast('🔗 링크가 복사됐어요!');
@@ -636,6 +657,7 @@ function copyLink() {
 
 function saveImage() {
   if (!currentResult) return;
+  logCTA('이미지 저장하기');
   const r = currentResult;
   document.getElementById('save-img').src = r.img;
   document.getElementById('save-name').textContent = r.name;
@@ -732,7 +754,7 @@ function showResult() {
       <div class="result-sub">${r.sub}</div>
       <div class="result-desc">${r.desc}</div>
       <div class="result-buttons">
-        <button class="result-cta" onclick="window.open('${r.link}', '_blank')">나한테 딱 맞는 청년주택 확인</button>
+        <button class="result-cta" onclick="logCTA('청년주택 확인'); window.open('${r.link}', '_blank')">나한테 딱 맞는 청년주택 확인</button>
         <div class="result-secondary-btns">
           <button class="result-share-btn" onclick="copyLink()">🔗 테스트 공유하기</button>
           <button class="result-save-btn" onclick="saveImage()">💾 이미지 저장하기</button>
