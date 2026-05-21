@@ -624,10 +624,8 @@ const userId = (() => {
 
 function logCTA(button) {
   const type = currentResult ? currentResult.name : '-';
-  fetch(SHEET_URL, {
-    method: 'POST',
-    body: JSON.stringify({ button, type, userId }),
-  }).catch(() => {});
+  const params = new URLSearchParams({ button, type, userId });
+  new Image().src = SHEET_URL + '?' + params.toString();
 }
 
 function render(html) {
