@@ -336,7 +336,7 @@ function showResult() {
           내 자취방 찾으러 가기
         </button>
         <div class="result-secondary-btns">
-          <button class="result-retry" onclick="showStart()"><span class="btn-icon">↩</span><span>다시 테스트</span></button>
+          <button class="result-retry" onclick="showStart()"><span class="btn-icon">🔄</span><span>다시 테스트</span></button>
           <button class="result-share-btn" onclick="copyLink()"><span class="btn-icon">🔗</span><span>결과 공유</span></button>
           <button class="result-save-btn" onclick="saveImage()"><span class="btn-icon">💾</span><span>이미지 저장</span></button>
         </div>
@@ -389,7 +389,7 @@ function openTypeModal(key) {
   modal.innerHTML = `
     <div class="type-modal-box">
       <button class="type-modal-close" id="modal-close">✕</button>
-      <div class="result-badge">내 자취 스타일</div>
+      <div class="result-badge">자취 스타일</div>
       <img class="result-img" src="${r.img}" alt="${r.name}" />
       <div class="result-name">${r.name}</div>
       <div class="result-sub">${r.sub}</div>
