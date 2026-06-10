@@ -193,17 +193,10 @@ function selectOption(idx) {
   });
 
   setTimeout(() => {
-    const card = document.getElementById('card-content');
-    if (card) {
-      card.style.opacity = '0';
-      card.style.transition = 'opacity 0.15s ease';
-    }
-    setTimeout(() => {
-      currentQ++;
-      if (currentQ < questions.length) showQuestion();
-      else showResult();
-    }, 150);
-  }, 300);
+    currentQ++;
+    if (currentQ < questions.length) showQuestion();
+    else showResult();
+  }, 400);
 }
 
 function getTopResult() {
