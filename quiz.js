@@ -193,10 +193,17 @@ function selectOption(idx) {
   });
 
   setTimeout(() => {
-    currentQ++;
-    if (currentQ < questions.length) showQuestion();
-    else showResult();
-  }, 400);
+    const card = document.getElementById('card-content');
+    if (card) {
+      card.style.opacity = '0';
+      card.style.transition = 'opacity 0.15s ease';
+    }
+    setTimeout(() => {
+      currentQ++;
+      if (currentQ < questions.length) showQuestion();
+      else showResult();
+    }, 150);
+  }, 300);
 }
 
 function getTopResult() {
@@ -248,7 +255,7 @@ function showStart() {
     <div class="start-screen">
       <div class="friend-banner" id="start-count">👋 <span id="start-count-text"></span></div>
       <img class="start-img" src="${BASE}0_start.png" alt="캐릭터" />
-      <div class="start-title">나의 <span>자취 스타일</span>은?</div>
+      <div class="start-title">내 <span>자취 스타일</span>은?</div>
       <div class="start-sub">8개 질문으로 알아보는<br>나에게 딱 맞는 자취 스타일!</div>
       <button class="start-btn" onclick="startQuiz()">테스트 시작</button>
       <div class="page-footer">@gobang.kr</div>

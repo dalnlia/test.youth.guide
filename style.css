@@ -274,8 +274,8 @@ body {
 }
 
 .result-img {
-  width: 270px;
-  height: 270px;
+  width: 310px;
+  height: 310px;
   object-fit: contain;
   margin: 0 auto 14px;
   display: block;
@@ -369,7 +369,8 @@ body {
 
 .result-share-btn .btn-icon,
 .result-kakao-btn .btn-icon,
-.result-save-btn .btn-icon {
+.result-save-btn .btn-icon,
+.result-retry .btn-icon {
   display: flex;
   align-items: center;
   justify-content: center;
