@@ -196,7 +196,7 @@ function selectOption(idx) {
     currentQ++;
     if (currentQ < questions.length) showQuestion();
     else showResult();
-  }, 400);
+  }, 250);
 }
 
 function getTopResult() {
@@ -459,6 +459,19 @@ function saveImage() {
   if (!currentResult) return;
   logCTA('이미지 저장');
   const r = currentResult;
+
+  if (typeof html2canvas === 'undefined') {
+    showToast('⏳ 이미지 생성 중...');
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    script.onload = () => _doSaveImage(r);
+    document.head.appendChild(script);
+    return;
+  }
+  _doSaveImage(r);
+}
+
+function _doSaveImage(r) {
 
   document.getElementById('save-img').src = r.img;
   document.getElementById('save-name').textContent = r.name;
