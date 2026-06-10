@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>내 자취 스타일 테스트 🏠 | 고방</title>
+
+  <!-- OG 기본값 (결과 화면에서 JS로 교체) -->
+  <meta property="og:title" content="내 자취 스타일 테스트 🏠" />
+  <meta property="og:description" content="8개 질문으로 알아보는 나에게 딱 맞는 자취 스타일!" />
+  <meta property="og:url" content="https://dalnlia.github.io/test.youth.guide/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" id="og-image" content="https://dalnlia.github.io/test.youth.guide/images/og/og_default.png" />
+
+  <!-- Pretendard -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+
+  <!-- html2canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- Kakao JS SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+          integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4"
+          crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- 메인 앱 -->
+<div id="app">
+  <div class="card fade-in" id="card-content"></div>
+</div>
+
+<!-- 인스타 스토리용 저장 카드 (화면 밖) -->
+<div id="save-card">
+  <div class="save-card-inner" id="save-card-inner">
+    <div class="save-tag">내 자취 스타일 테스트</div>
+    <div class="save-img-wrap"><img class="save-img" id="save-img" src="" alt="" /></div>
+    <div class="save-name" id="save-name"></div>
+    <div class="save-sub" id="save-sub"></div>
+    <div class="save-desc" id="save-desc"></div>
+    <div class="save-footer">고방 · gobang.kr</div>
+  </div>
+</div>
+
+<!-- 토스트 -->
+<div class="toast" id="toast"></div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    if (window.Kakao && !Kakao.isInitialized()) {
+      Kakao.init('YOUR_KAKAO_JS_KEY');
+    }
+  });
+</script>
+<script src="quiz.js"></script>
+</body>
+</html>

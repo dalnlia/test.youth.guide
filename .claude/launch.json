@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "jachwi-test",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "3939", "."],
+      "port": 3939
+    }
+  ]
+}
