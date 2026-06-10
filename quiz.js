@@ -336,10 +336,10 @@ function showResult() {
           내 자취방 찾으러 가기
         </button>
         <div class="result-secondary-btns">
+          <button class="result-retry" onclick="showStart()"><span class="btn-icon">↩</span><span>다시 테스트</span></button>
           <button class="result-share-btn" onclick="copyLink()"><span class="btn-icon">🔗</span><span>결과 공유</span></button>
           <button class="result-save-btn" onclick="saveImage()"><span class="btn-icon">💾</span><span>이미지 저장</span></button>
         </div>
-        <button class="result-retry" onclick="showStart()">다시 테스트하기 ↩</button>
       </div>
       <div class="all-types-wrap">
         <div class="all-types-label">다른 자취 스타일도 궁금하다면?</div>
