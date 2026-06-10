@@ -2,6 +2,11 @@
 const BASE = 'images/';
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwJebOavBCbLZXdGy_J5V0Nm8rEi6Ga3yF1Z9cADWezP4mmAqWlHJ4oq1isv_E4svNkhA/exec';
 
+// 페이지 로드 즉시 카운트 fetch 시작 (showStart보다 먼저)
+const countPromise = fetch(SHEET_URL + '?action=count')
+  .then(r => r.json())
+  .catch(() => null);
+
 // ===== QUESTIONS =====
 const questions = [
   {
@@ -260,22 +265,18 @@ function showStart() {
     }
   }
 
-  fetch(SHEET_URL + '?action=count')
-    .then(r => r.json())
-    .then(data => {
-      if (data.count > 0) {
-        localStorage.setItem('jachwi_count', data.count);
-        const el = document.getElementById('start-count');
-        const txt = document.getElementById('start-count-text');
-        if (el && txt) {
-          txt.innerHTML = '총 <strong>' + data.count.toLocaleString() + '명</strong>이 테스트했어요!';
-          if (!el.classList.contains('visible')) {
-            requestAnimationFrame(() => el.classList.add('visible'));
-          }
-        }
+  countPromise.then(data => {
+    if (!data || !data.count) return;
+    localStorage.setItem('jachwi_count', data.count);
+    const el = document.getElementById('start-count');
+    const txt = document.getElementById('start-count-text');
+    if (el && txt) {
+      txt.innerHTML = '총 <strong>' + data.count.toLocaleString() + '명</strong>이 테스트했어요!';
+      if (!el.classList.contains('visible')) {
+        requestAnimationFrame(() => el.classList.add('visible'));
       }
-    })
-    .catch(() => {});
+    }
+  });
 }
 
 function startQuiz() {
