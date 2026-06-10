@@ -524,6 +524,8 @@ body {
   display: flex;
   gap: 8px;
   overflow-x: auto;
+  overflow-y: visible;
+  padding-top: 6px;
   padding-bottom: 6px;
   scrollbar-width: none;
 }
