@@ -498,7 +498,7 @@ function _doSaveImage(r) {
 }
 
 // ===== INIT =====
-const initType = getResultFromUrl();
+const initType = getFriendTypeName();
 if (initType) {
   showResult(initType);
 } else {
