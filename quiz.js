@@ -247,11 +247,10 @@ function showStart() {
   render(`
     <div class="start-screen">
       <div class="friend-banner" id="start-count">👋 <span id="start-count-text"></span></div>
-      <img class="start-img" src="${BASE}0_start.png" alt="캐릭터" />
-      <div class="start-title">내 <span>자취 스타일</span>은?</div>
+      <img class="start-img" src="${BASE}start.png" alt="내 자취 스타일은?" />
       <div class="start-sub">8개 질문으로 알아보는<br>나에게 딱 맞는 자취 스타일!</div>
       <button class="start-btn" onclick="startQuiz()">테스트 시작</button>
-      <div class="page-footer">@gobang.kr</div>
+      <div class="page-footer">gobang.kr</div>
     </div>
   `);
 
@@ -307,18 +306,15 @@ function showQuestion() {
   `);
 }
 
-function showResult() {
-  const topKey = getTopResult();
+function showResult(overrideKey) {
+  const topKey = overrideKey || getTopResult();
   const r = results[topKey];
   currentResult = r;
 
   const urlKey = RESULT_KEY_MAP[topKey];
   window.history.replaceState(null, '', window.location.pathname + '?r=' + urlKey);
 
-  logCTA('테스트완료');
-
-  const ogImg = document.getElementById('og-image');
-  if (ogImg) ogImg.content = 'https://dalnlia.github.io/test.youth.guide/images/og/og_' + urlKey + '.png';
+  if (!overrideKey) logCTA('테스트완료');
 
   render(`
     <div class="result-screen">
@@ -352,7 +348,7 @@ function showResult() {
           `).join('')}
         </div>
       </div>
-      <div class="page-footer">@gobang.kr</div>
+      <div class="page-footer">gobang.kr</div>
     </div>
   `);
 
@@ -502,4 +498,9 @@ function _doSaveImage(r) {
 }
 
 // ===== INIT =====
-showStart();
+const initType = getResultFromUrl();
+if (initType) {
+  showResult(initType);
+} else {
+  showStart();
+}

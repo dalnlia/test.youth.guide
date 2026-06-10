@@ -13,11 +13,13 @@ jachwi-test/
 ├── style.css           # 디자인 시스템 및 컴포넌트 스타일
 ├── 시작.bat             # 로컬 서버 실행 + 브라우저 오픈
 ├── images/
-│   ├── 0_start.png     # 시작 화면 캐릭터
+│   ├── start.png       # 시작 화면 (타이틀 + 캐릭터 통합 이미지)
 │   ├── 1_bangguseok.png ~ 8_mirae.png  # 유형별 캐릭터 이미지 (투명 PNG)
-│   └── og/             # OG 이미지 (배포 시 생성 필요)
+│   └── og/
+│       └── og_default.png  # OG 기본 이미지
 └── docs/
-    └── GUIDE.md        # 이 문서
+    ├── GUIDE.md        # 이 문서
+    └── 기획서.md        # 초기 기획 문서
 ```
 
 ---
@@ -28,10 +30,10 @@ jachwi-test/
 |------|------|
 | 언어 | Vanilla JS, HTML, CSS (프레임워크 없음) |
 | 폰트 | Pretendard (CDN) |
-| 이미지 저장 | html2canvas 1.4.1 |
+| 이미지 저장 | html2canvas 1.4.1 (CDN, 결과 저장 시 로드) |
 | 공유 | Web Share API (모바일) / clipboard fallback (PC) |
-| 테스트 카운트 | Google Sheets Apps Script (`?action=count`) |
-| 배포 | GitHub Pages |
+| 테스트 카운트 | Google Sheets Apps Script (`?action=count`) + localStorage 캐시 |
+| 배포 | GitHub Pages (`dalnlia/test.youth.guide`) |
 
 ---
 
@@ -117,20 +119,50 @@ scores[type] += 1
 
 ## 외부 연동
 
-### Google Sheets (테스트 카운트)
+### Google Sheets (테스트 카운트 및 행동 로그)
 - Apps Script URL: `quiz.js` 상단 `SHEET_URL` 상수
 - `?action=count` → 총 테스트 수 반환 (JSON `{ count: N }`)
 - `?action=log` (기본) → 유형 결과 기록
+- 카운트는 `localStorage('jachwi_count')`에 캐시되어 재방문 시 즉시 표시
 
-### Kakao SDK
-- `index.html` 내 `YOUR_KAKAO_JS_KEY` → 실제 키로 교체 필요
-- 사용 도메인을 Kakao Developers에 등록 필요
+#### 로그 컬럼 구조
+| 컬럼 | 내용 |
+|------|------|
+| 타임스탬프 | 이벤트 발생 시각 |
+| 버튼 | `테스트 시작` / `테스트완료` / `링크 복사` / `내 자취방 찾으러 가기` / `이미지 저장` |
+| 유형 | 결과 유형명 (테스트 시작 시점은 `-`) |
+| 유저ID | `u_xxxxxxxx` 형태의 랜덤 ID |
+
+#### 유저ID 생성 기준
+- 브라우저 탭을 처음 열 때 랜덤 생성 → `sessionStorage`에 저장
+- **같은 탭** 안에서는 동일 ID 유지 (다시하기 버튼 포함)
+- **탭을 닫거나 새로 열면** 새 ID 생성 → 동일인이어도 별개 유저로 카운팅
+- `localStorage`로 변경하면 탭을 닫아도 같은 기기에서 동일 ID 유지 가능
+
+#### 피벗 뷰 수식 (시트2 A1에 붙여넣기)
+```
+=LET(ids, SORT(UNIQUE(FILTER(CTAlog!D2:D, CTAlog!D2:D<>"", CTAlog!D2:D<>"-"))),
+{"유저ID","타임스탬프","유형","테스트시작","테스트완료","링크복사","CTA클릭","이미지저장";
+ ids,
+ BYROW(ids, LAMBDA(id, MINIFS(CTAlog!A2:A, CTAlog!D2:D, id))),
+ BYROW(ids, LAMBDA(id, IFERROR(VLOOKUP(id, FILTER({CTAlog!D2:D, CTAlog!C2:C}, CTAlog!C2:C<>"-", CTAlog!C2:C<>""), 2, 0), ""))),
+ BYROW(ids, LAMBDA(id, COUNTIFS(CTAlog!D2:D, id, CTAlog!B2:B, "테스트 시작")>0)),
+ BYROW(ids, LAMBDA(id, COUNTIFS(CTAlog!D2:D, id, CTAlog!B2:B, "테스트완료")>0)),
+ BYROW(ids, LAMBDA(id, COUNTIFS(CTAlog!D2:D, id, CTAlog!B2:B, "링크 복사")>0)),
+ BYROW(ids, LAMBDA(id, COUNTIFS(CTAlog!D2:D, id, CTAlog!B2:B, "내 자취방 찾으러 가기")>0)),
+ BYROW(ids, LAMBDA(id, COUNTIFS(CTAlog!D2:D, id, CTAlog!B2:B, "이미지 저장")>0))
+})
+```
+
+---
+
+## 배포 정보
+
+- **개인 계정 배포**: `https://dalnlia.github.io/test.youth.guide/`
+- **OG 캐시 초기화**: `https://developers.kakao.com/tool/clear/og`
 
 ---
 
 ## 배포 체크리스트
 
-- [ ] Kakao JS Key 교체 (`index.html`)
-- [ ] GitHub Pages 도메인 Kakao Developers 등록
-- [ ] OG 이미지 9종 생성 → `images/og/` 에 저장
 - [ ] `index.html` OG URL (`og:url`, `og:image`) 실제 도메인으로 수정
