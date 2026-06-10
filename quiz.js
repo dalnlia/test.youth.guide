@@ -250,14 +250,29 @@ function showStart() {
     </div>
   `);
 
+  const cached = localStorage.getItem('jachwi_count');
+  if (cached) {
+    const el = document.getElementById('start-count');
+    const txt = document.getElementById('start-count-text');
+    if (el && txt) {
+      txt.innerHTML = '총 <strong>' + Number(cached).toLocaleString() + '명</strong>이 테스트했어요!';
+      requestAnimationFrame(() => el.classList.add('visible'));
+    }
+  }
+
   fetch(SHEET_URL + '?action=count')
     .then(r => r.json())
     .then(data => {
-      const el = document.getElementById('start-count');
-      const txt = document.getElementById('start-count-text');
-      if (el && txt && data.count > 0) {
-        txt.innerHTML = '총 <strong>' + data.count.toLocaleString() + '명</strong>이 테스트했어요!';
-        requestAnimationFrame(() => el.classList.add('visible'));
+      if (data.count > 0) {
+        localStorage.setItem('jachwi_count', data.count);
+        const el = document.getElementById('start-count');
+        const txt = document.getElementById('start-count-text');
+        if (el && txt) {
+          txt.innerHTML = '총 <strong>' + data.count.toLocaleString() + '명</strong>이 테스트했어요!';
+          if (!el.classList.contains('visible')) {
+            requestAnimationFrame(() => el.classList.add('visible'));
+          }
+        }
       }
     })
     .catch(() => {});
