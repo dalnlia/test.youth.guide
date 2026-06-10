@@ -337,10 +337,6 @@ function showResult() {
         </button>
         <div class="result-secondary-btns">
           <button class="result-share-btn" onclick="copyLink()"><span class="btn-icon">🔗</span><span>결과 공유</span></button>
-          <button class="result-kakao-btn" onclick="shareKakao()">
-            <span class="btn-icon"><img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
-                 style="width:20px;height:20px;object-fit:contain;" alt="" /></span><span>카카오 공유</span>
-          </button>
           <button class="result-save-btn" onclick="saveImage()"><span class="btn-icon">💾</span><span>이미지 저장</span></button>
         </div>
         <button class="result-retry" onclick="showStart()">다시 테스트하기 ↩</button>
